@@ -8,3 +8,5 @@ Thumbs.db
 
 # Abhängigkeiten
 node_modules/
+screenshots/
+.playwright-mcp/
