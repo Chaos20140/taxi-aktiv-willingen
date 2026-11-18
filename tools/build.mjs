@@ -20,6 +20,12 @@ const OUT = join(ROOT, 'docs');
 // Vor dem Livegang auf true setzen (Impressum-Platzhalter vorher ausfüllen!).
 const INDEXING = false;
 
+// Öffentliche Adresse der Website (mit / am Ende). Wird für das Link-Vorschaubild
+// (WhatsApp & Co. brauchen absolute URLs) und og:url genutzt.
+// Bei eigener Domain hier ändern, z. B. 'https://www.taxi-aktiv-willingen.de/'.
+const SITE_URL = 'https://chaos20140.github.io/taxi-aktiv-willingen/';
+const OG_IMAGE = 'assets/og-image.jpg'; // 1200 × 630, Vorlage: tools/og-image.html
+
 const SITE = {
   name: 'Taxi Aktiv Willingen',
   phone: '05632 9988',
@@ -172,7 +178,7 @@ function header(page) {
 <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;gap:12px">
 <a href="index.html" aria-label="Taxi Aktiv Willingen – Startseite" style="cursor:pointer;display:flex;flex-direction:column;gap:3px;flex:none;color:inherit;text-decoration:none">${logo({ mobile: true })}</a>
 <div style="display:flex;gap:8px">
-<a href="${SITE.tel}" aria-label="Anrufen: ${SITE.phone}" style="width:44px;height:44px;border-radius:50%;background:#FFD000;color:#151515;display:grid;place-items:center;font-size:19px;animation:taPulse 2.2s infinite">${I.phone}</a>
+<a href="${SITE.tel}" aria-label="Anrufen: ${SITE.phone}" class="ta-ring" style="position:relative;width:44px;height:44px;border-radius:50%;--face:#FFD000;--ring-c:rgba(255,208,0,.7);--ring-s:14px;--ring-a:2.2s ease;color:#151515;display:grid;place-items:center;font-size:19px">${I.phone}</a>
 <button type="button" data-menu-toggle aria-expanded="false" aria-controls="ta-mmenu" aria-label="Menü öffnen" style="width:44px;height:44px;border-radius:50%;border:2px solid #151515;background:#fff;display:grid;place-items:center;font-size:20px;cursor:pointer;color:#151515"><span data-icon-menu>${I.menu}</span><span data-icon-close hidden>${I.x}</span></button>
 </div>
 </div>
@@ -192,7 +198,7 @@ ${dItems}
 <span class="ta-nav-ind" data-nav-ind></span>
 </nav></div>
 <a class="only-wide" href="${SITE.tel}" style="display:flex;align-items:center;gap:8px;height:42px;padding:0 18px;border-radius:999px;background:#fff;color:#151515;text-decoration:none;font:700 15px Poppins,sans-serif;box-shadow:0 2px 10px rgba(0,0,0,.08);white-space:nowrap;flex:none"><span style="font-size:15px">${I.phone}</span>${SITE.phone}</a>
-<a href="kontakt.html" style="display:flex;align-items:center;gap:9px;height:42px;padding:0 20px;border:2px solid #151515;border-radius:999px;background:#151515;color:#fff;font:600 15px Poppins,sans-serif;cursor:pointer;white-space:nowrap;flex:none;animation:taBeat 1.8s ease-in-out infinite, taRing 1.8s ease-out infinite;text-decoration:none" style-hover="background:#000"><span style="font-size:16px;color:#FFD000">${I.calendarCheck}</span>Taxi buchen</a>
+<a href="kontakt.html" class="ta-ring" style="position:relative;display:flex;align-items:center;gap:9px;height:42px;padding:0 20px;border:2px solid #151515;border-radius:999px;--face:#151515;--face-hover:#000;--edge:#151515;--ring-b:2px;--ring-c:rgba(255,208,0,.75);--ring-s:22px;--ring-a:1.8s ease-out;color:#fff;font:600 15px Poppins,sans-serif;cursor:pointer;white-space:nowrap;flex:none;animation:taBeat 1.8s ease-in-out infinite;text-decoration:none"><span style="font-size:16px;color:#FFD000">${I.calendarCheck}</span>Taxi buchen</a>
 </header>
 </div>`;
 }
@@ -697,7 +703,7 @@ ${social}
 
 function overlays(page) {
   const fab = page === 'kontakt' ? '' : `
-<a href="kontakt.html" class="ta-fab" data-fab hidden aria-label="Taxi jetzt buchen" style="position:fixed;right:24px;bottom:24px;z-index:55;display:flex;align-items:center;gap:12px;height:60px;padding:0 28px;border:2px solid #FFD000;border-radius:999px;background:#151515;color:#fff;font:700 17px Poppins,sans-serif;cursor:pointer;white-space:nowrap;box-shadow:0 10px 30px rgba(0,0,0,.3);animation:taBeat 1.8s ease-in-out infinite, taRing 1.8s ease-out infinite;text-decoration:none" style-hover="background:#000"><span style="font-size:21px">${I.car}</span>Taxi jetzt buchen<span style="font-size:19px">${I.arrowRight}</span></a>`;
+<a href="kontakt.html" class="ta-fab ta-ring" data-fab hidden aria-label="Taxi jetzt buchen" style="position:fixed;right:24px;bottom:24px;z-index:55;display:flex;align-items:center;gap:12px;height:60px;padding:0 28px;border:2px solid #FFD000;border-radius:999px;--face:#151515;--face-hover:#000;--edge:#FFD000;--ring-b:2px;--ring-c:rgba(255,208,0,.75);--ring-s:22px;--ring-a:1.8s ease-out;color:#fff;font:700 17px Poppins,sans-serif;cursor:pointer;white-space:nowrap;animation:taBeat 1.8s ease-in-out infinite;text-decoration:none"><span style="font-size:21px">${I.car}</span>Taxi jetzt buchen<span style="font-size:19px">${I.arrowRight}</span></a>`;
   const row = (key, title, text) => `<div style="display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-top:1px solid #ececec">
 <div style="flex:1"><div id="ck-${key}" style="font:700 15px Poppins,sans-serif">${title}</div><div style="font:13px/1.5 'DM Sans',sans-serif;color:#555;margin-top:3px">${text}</div></div>
 <button type="button" role="switch" aria-checked="false" aria-labelledby="ck-${key}" class="ta-switch" data-consent-toggle="${key}"><span></span></button>
@@ -799,6 +805,13 @@ ${INDEXING ? '' : '<meta name="robots" content="noindex, nofollow">\n'}<meta nam
 <meta property="og:site_name" content="${SITE.name}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
+<meta property="og:url" content="${SITE_URL}${page === 'home' ? '' : PAGES[page].file}">
+<meta property="og:image" content="${SITE_URL}${OG_IMAGE}?v=${v.og}">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Taxi Aktiv Willingen – Großraumtaxi, Telefon ${SITE.phone}, 24/7 erreichbar">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/poppins-800.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/dmsans-var.woff2" as="font" type="font/woff2" crossorigin>
@@ -855,7 +868,8 @@ mkdirSync(join(OUT, 'assets'), { recursive: true });
 
 const order = ['home', 'leistungen', 'ueber', 'kontakt', 'impressum', 'datenschutz'];
 // 1. Durchlauf: Hover-Klassen sammeln (Platzhalter-Versionen)
-const drafts = order.map((pg) => [pg, applyHover(renderPage(pg, { css: '@CSS@', js: '@JS@' }))]);
+const ogVer = hash(readFileSync(join(OUT, OG_IMAGE))); // Cache-Buster: neues Bild → neue URL für WhatsApp & Co.
+const drafts = order.map((pg) => [pg, applyHover(renderPage(pg, { css: '@CSS@', js: '@JS@', og: ogVer }))]);
 
 const hoverCss = [...hoverRules].map(([css, cls]) => `.${cls}:hover{${importantify(css)}}`).join('\n');
 const css = `${readFileSync(join(ROOT, 'src/styles.css'), 'utf8')}\n/* ---------- Hover (generiert aus style-hover) ---------- */\n${hoverCss}\n`;

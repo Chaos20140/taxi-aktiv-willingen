@@ -56,7 +56,28 @@ Dann <http://localhost:5173> öffnen.
 - [ ] WhatsApp-Nummer eintragen (`data-todo="whatsapp"` in `tools/build.mjs`).
 - [ ] Social-Media-Links (Instagram, Facebook, YouTube) im Footer verlinken.
 - [ ] Fotos für die Platzhalter: Willingen-Panorama, Teamfoto (Über uns), Krankenfahrten und Kurierfahrten (Leistungen).
-- [ ] Domain festlegen, dann `INDEXING = true` setzen und neu bauen.
+- [ ] Domain festlegen, dann `SITE_URL` (Link-Vorschau) anpassen, `INDEXING = true` setzen und neu bauen.
+
+## Link-Vorschaubild (WhatsApp, Facebook, iMessage …)
+
+`docs/assets/og-image.jpg` (1200 × 630) wird beim Teilen des Links angezeigt. Vorlage ist
+`tools/og-image.html` (gleiche Schriften, Farben und Fahrzeugbilder wie die Website).
+Nach einer Änderung der Vorlage neu erzeugen:
+
+```powershell
+python -m http.server 5180 --bind 127.0.0.1
+```
+
+Dann <http://127.0.0.1:5180/tools/og-image.html> bei 1200 × 630 als Screenshot speichern,
+zu JPEG (< 300 KB, sonst zeigt WhatsApp es nicht) umwandeln, als `docs/assets/og-image.jpg`
+ablegen und `node tools/build.mjs` ausführen – die Bild-URL bekommt dabei automatisch einen
+neuen `?v=`-Stempel, damit WhatsApp & Co. das neue Bild laden.
+
+## Performance-Hinweis
+
+Dauer-Animationen nur mit `transform`/`opacity` bauen – die laufen auf der GPU. Die
+pulsierenden Ringe (`.ta-ring`) waren im Design eine `box-shadow`-Animation; die ließ den
+Browser jedes Frame neu malen (gemessen auf dem Handy-Profil: ~90 % der Malarbeit beim Scrollen).
 
 ## Veröffentlichen (GitHub Pages)
 

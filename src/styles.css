@@ -43,8 +43,21 @@ input::placeholder,textarea::placeholder{color:#9a9a9a}
 @keyframes taFloatS{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-10px,14px) scale(1.05)}66%{transform:translate(12px,-8px) scale(.97)}}
 @keyframes taFadeUp{0%{opacity:0;transform:translateY(26px)}100%{opacity:1;transform:none}}
 @keyframes taPulse{0%{box-shadow:0 0 0 0 rgba(255,208,0,.7)}70%{box-shadow:0 0 0 14px rgba(255,208,0,0)}100%{box-shadow:0 0 0 0 rgba(255,208,0,0)}}
-[data-motion="off"] *{animation:none!important}
-@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+[data-motion="off"] *,[data-motion="off"] *::after{animation:none!important}
+@media (prefers-reduced-motion:reduce){*,*::after{animation:none!important}.ta-fab{box-shadow:0 10px 30px rgba(0,0,0,.3)}}
+
+/* Puls-Ringe (Telefon-Button, „Taxi buchen“, „Taxi jetzt buchen“).
+   Im Design eine box-shadow-Animation – die zwingt den Browser, jedes Frame neu zu malen
+   (gemessen: ~90 % der Malarbeit beim Scrollen). Hier dieselbe Optik über transform/opacity
+   auf Pseudo-Elementen, die die GPU animiert:
+   ::before = Button-Fläche, ::after = Ring dahinter (wächst von Button-Größe um --ring-s).
+   --ring-sx/--ring-sy (Startskalierung) setzt main.js aus der echten Größe. */
+.ta-ring{isolation:isolate;background:transparent!important;border-color:transparent!important}
+.ta-ring::before,.ta-ring::after{content:"";position:absolute;pointer-events:none;border-radius:inherit}
+.ta-ring::before{inset:calc(-1 * var(--ring-b,0px));z-index:-1;background:var(--face);border:var(--ring-b,0px) solid var(--edge,transparent);transition:background .2s}
+.ta-ring:hover::before{background:var(--face-hover,var(--face))}
+.ta-ring::after{inset:calc(-1 * (var(--ring-b,0px) + var(--ring-s)));z-index:-2;background:var(--ring-c);opacity:0;animation:taRingT var(--ring-a) infinite;will-change:transform,opacity}
+@keyframes taRingT{0%{transform:scale(var(--ring-sx,.8),var(--ring-sy,.6));opacity:1}70%,100%{transform:none;opacity:0}}
 
 /* ---------- Responsive-Umschaltung ----------
    Im Design entscheidet JS anhand der Breite des Wurzel-Containers:

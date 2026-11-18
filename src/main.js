@@ -51,6 +51,27 @@
   }
 
   /* ---------------------------------------------------------------------------
+     Puls-Ringe: Startskalierung aus der echten Button-Größe (siehe .ta-ring in
+     styles.css), damit der Ring exakt an der Button-Kante startet – wie das
+     box-shadow-Original. ResizeObserver greift auch, wenn ein Button erst später
+     sichtbar wird (FAB) oder die Schrift nachlädt.
+     ------------------------------------------------------------------------- */
+  function sizeRing(el) {
+    var s = parseFloat(getComputedStyle(el).getPropertyValue('--ring-s')) || 0;
+    var w = el.offsetWidth, h = el.offsetHeight; // Rahmen-Box, ohne transform
+    if (!w || !h) return;
+    el.style.setProperty('--ring-sx', (w / (w + 2 * s)).toFixed(4));
+    el.style.setProperty('--ring-sy', (h / (h + 2 * s)).toFixed(4));
+  }
+  var rings = $$('.ta-ring');
+  if (window.ResizeObserver) {
+    var ro = new ResizeObserver(function (entries) { entries.forEach(function (e) { sizeRing(e.target); }); });
+    rings.forEach(function (el) { ro.observe(el); });
+  } else {
+    rings.forEach(sizeRing);
+  }
+
+  /* ---------------------------------------------------------------------------
      Mobiles Menü
      ------------------------------------------------------------------------- */
   var menuBtn = $('[data-menu-toggle]');
