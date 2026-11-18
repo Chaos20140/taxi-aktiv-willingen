@@ -1,0 +1,10 @@
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Claude-Code-Arbeitsdateien
+.claude/
+
+# Abhängigkeiten
+node_modules/
