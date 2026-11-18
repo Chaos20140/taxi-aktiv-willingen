@@ -60,5 +60,12 @@ Dann <http://localhost:5173> öffnen.
 
 ## Veröffentlichen (GitHub Pages)
 
-Repository → Settings → Pages → „Deploy from a branch“ → Branch `main`, Ordner `/docs`.
-Es wird nur der Ordner `docs/` veröffentlicht, Quellcode und Notizen bleiben privat.
+Live: <https://chaos20140.github.io/taxi-aktiv-willingen/>
+
+GitHub Pages ist aktiv: Branch `main`, Ordner `/docs`. Jeder Push auf `main` geht
+automatisch nach ca. 1 Minute live – also vorher immer `node tools/build.mjs` ausführen.
+Als Website ausgeliefert wird nur `docs/`; das Repository selbst ist öffentlich
+(Voraussetzung für Pages im Free-Plan), daher **niemals Zugangsdaten oder Schlüssel
+committen** (auch später nicht für Supabase – dort nur den öffentlichen `anon`-Key mit RLS).
+
+Eigene Domain später: Settings → Pages → Custom domain, danach `INDEXING = true`.
